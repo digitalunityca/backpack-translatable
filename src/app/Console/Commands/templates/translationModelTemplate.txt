@@ -1,0 +1,15 @@
+<?php
+
+namespace App\Models;
+
+use #class# as BaseTranslation;
+
+class ##Translation extends BaseTranslation{
+	/**
+	 * The table associated with the model.
+	 *
+	 * @var string
+	 */
+    protected $table = '###_translations';
+
+}
