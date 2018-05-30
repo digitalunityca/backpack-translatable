@@ -79,8 +79,9 @@ trait HasTranslations
      * Save translations for model
      * @return void
      */
-    public function saveTranslations(array $data = [])
+    public function saveTranslations()
     {
+        $data = request()->all();
 
         if ($this->getTranslatableFields()){
 

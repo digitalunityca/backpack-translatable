@@ -76,7 +76,7 @@ class BaseTranslation extends Model
      * Get value by Field and Locale / LocaleId
      * @return mixed
      */
-    public function scopeByFieldAndLocaleId($query, $field, $locale)
+    public function scopeByFieldAndLocaleId(Builder $query, string $field, string $locale):Builder
     {
         if (is_int($locale)) {
             $localeId = $locale;
@@ -86,7 +86,7 @@ class BaseTranslation extends Model
         }
 
         return $query->where('field', $field)
-            ->where('locale_id', $localeId);
+                     ->where('locale_id', $localeId);
     }
 
     /**
@@ -109,9 +109,9 @@ class BaseTranslation extends Model
 
     /**
      * Get value by Field,Value and Locale / LocaleId
-     * @return mixed
+     * @return Builder
      */
-    public function scopeByFieldSlugLocaleId($query, $value, $field, $locale=null)
+    public function scopeByFieldSlugLocaleId(Builder $query, $value, $field, $locale=null):Builder
     {
         if (is_null($locale)) {
             $localeId = appFrontLocale(true);
@@ -125,24 +125,24 @@ class BaseTranslation extends Model
         }
 
         return $query->where('field', $field)
-            ->where('slug', $value)
-            ->where('locale_id', $localeId);
+                     ->where('slug', $value)
+                     ->where('locale_id', $localeId);
     }
 
     /**
      * Get value by value
-     * @return mixed
+     * @return Builder
      */
-    public function scopeByValueLike($query, $value)
+    public function scopeByValueLike(Builder $query, $value):Builder
     {
         return $query->where('value', 'LIKE', '%'.$value.'%');
     }
 
     /**
      * Get value by value
-     * @return mixed
+     * @return Builder
      */
-    public function scopeByValue($query, $value)
+    public function scopeByValue(Builder $query, string $value):Builder
     {
         return $query->where('value', $value);
     }

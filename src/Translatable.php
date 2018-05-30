@@ -17,6 +17,14 @@ class Translatable
         $this->separator = config('backpack.translatable.separator');
     }
 
+    /**
+     * Regex Pattern
+     * @return string
+     */
+    public function getLocalePattern()
+    {
+        return '/^(\w*)'.$this->separator.'(\w{2})$/is';
+    }
 
     /**
      * Get active languages
@@ -25,8 +33,7 @@ class Translatable
      */
     public function isLocalizedInput($inputName): bool
     {
-        $pattern = '/^\w{1,}'.$this->separator.'\w{2}$/';
-        return preg_match($pattern, $inputName);
+        return preg_match($this->getLocalePattern(), $inputName);
     }
 
     /**
@@ -36,9 +43,7 @@ class Translatable
     */
     public function getLocalePatternMatches($field):array
     {
-        $pattern = '/^(\w*)'.$this->separator.'(\w{2})$/';
-        preg_match($pattern, $field, $matches);
-
+        preg_match($this->getLocalePattern(), $field, $matches);
         return $matches;
     }
 
@@ -58,5 +63,37 @@ class Translatable
         }
 
         return $language->id;
+    }
+
+    /**
+     * Get localized field name
+     * @param $localeAbbr
+     * @return int
+     */
+    public function localizedFieldName(string $field, string $localeAbbr): string
+    {
+        return strtolower($field.$this->separator.$localeAbbr);
+    }
+
+    /**
+     * Get active locales array
+     *
+     * @param bool $withAbbr
+     * @return array
+     */
+    function activeLocales(bool $withAbbr = false): array
+    {
+        $languages = \Backpack\LangFileManager\app\Models\Language::where('active', 1)->get();
+
+        if (!$withAbbr) {
+            return $languages->pluck('id')->toArray();
+        }
+
+        $withAbbrLanguages = [];
+        foreach ($languages as $lang) {
+            $withAbbrLanguages[$lang->id] = $lang->abbr;
+        }
+
+        return $withAbbrLanguages;
     }
 }
