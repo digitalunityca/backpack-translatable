@@ -24,23 +24,29 @@ trait HasTranslations
      */
     public function __get($key)
     {
+
         $translatable = $this->getTranslatableFields();
 
-        if (isset($translatable) && in_array($key, $translatable)) {
+        if (Translatable::isLocalizedInput($key) && isset($translatable)){
+            $matches  = Translatable::getLocalePatternMatches($key);
+            $field = $matches[1];
 
-            if (!$this->translations){
-                $this->load('translations');
+            if (in_array($field, $translatable)) {
+
+                if (!$this->translations){
+                    $this->load('translations');
+                }
+
+                $translations = $this->translations;
+
+                $translation = $translations
+                    ->where('field',$field)
+                    ->where('entity_id', $this->id)
+                    ->where('locale_id', Translatable::localeId($matches[2]))
+                    ->first();
+
+                return $translation->value??'';
             }
-
-            $translations = $this->translations;
-
-            $translation = $translations
-                ->where('field',$key)
-                ->where('entity_id', $this->id)
-                ->where('locale_id', Translatable::localeId())
-                ->first();
-
-            return $translation->value??'';
         }
 
         return parent::__get($key);
