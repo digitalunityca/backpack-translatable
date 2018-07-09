@@ -92,9 +92,11 @@ trait HasTranslations
         if ($this->getTranslatableFields()){
 
             foreach ($data as $field=>$value) {
-                if (Translatable::isLocalizedInput($field) && $value) {
+                if (Translatable::isLocalizedInput($field)) {
+
                     $matches  = Translatable::getLocalePatternMatches($field);
                     $localeId = Translatable::localeId($matches['2']);
+                    dd($matches);
 
                     if (in_array($matches[1],$this->getTranslatableFields())){
 
