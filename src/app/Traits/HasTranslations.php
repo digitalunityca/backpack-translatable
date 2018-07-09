@@ -96,19 +96,26 @@ trait HasTranslations
 
                     $matches  = Translatable::getLocalePatternMatches($field);
                     $localeId = Translatable::localeId($matches['2']);
-                    dd($matches);
 
-                    if (in_array($matches[1],$this->getTranslatableFields())){
-
-                        $this->translations()->firstOrCreate([
-                            'entity_id' =>  $this->id,
+                    if (!$value){
+                        $this->translations()->where([
                             'field'     =>  $matches[1],
                             'locale_id' =>  $localeId
-                        ])->update([
-                            'value' =>  $value,
-                            'slug'  =>  str_slug($value)
-                        ]);
+                        ])->delete();
+                    }else{
 
+                        if (in_array($matches[1],$this->getTranslatableFields())){
+
+                            $this->translations()->firstOrCreate([
+                                'entity_id' =>  $this->id,
+                                'field'     =>  $matches[1],
+                                'locale_id' =>  $localeId
+                            ])->update([
+                                'value' =>  $value,
+                                'slug'  =>  str_slug($value)
+                            ]);
+
+                        }
                     }
                 }
             }
