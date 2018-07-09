@@ -24,7 +24,6 @@ trait HasTranslations
      */
     public function __get($key)
     {
-
         $translatable = $this->getTranslatableFields();
 
         if (Translatable::isLocalizedInput($key) && isset($translatable)){
