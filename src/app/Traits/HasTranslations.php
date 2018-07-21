@@ -111,7 +111,7 @@ trait HasTranslations
                                 'locale_id' =>  $localeId
                             ])->update([
                                 'value' =>  $value,
-                                'slug'  =>  str_slug($value)
+                                'slug'  =>  substr(str_slug(strip_tags($value)),0,150)
                             ]);
 
                         }
