@@ -48,6 +48,24 @@ trait HasTranslations
             }
         }
 
+        if (isset($translatable) && in_array($key, $translatable)){
+            if (!$this->translations){
+                $this->load('translations');
+            }
+
+            $translations = $this->translations;
+
+            $translation = $translations
+                ->where('field',$key)
+                ->where('entity_id', $this->id)
+                ->where('locale_id', localeId())
+                ->first();
+
+            return $translation->value??'';
+        }
+
+
+
         return parent::__get($key);
     }
 
