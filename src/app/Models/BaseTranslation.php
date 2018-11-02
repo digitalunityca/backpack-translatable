@@ -30,7 +30,7 @@ class BaseTranslation extends Model
     public function scopeByField($query, $field)
     {
         return $query->where('field', $field)
-            ->where('locale_id', appLocaleId());
+            ->where('locale_id', localeId());
     }
 
     /**
@@ -58,7 +58,7 @@ class BaseTranslation extends Model
      */
     public function scopeByActiveLocale($query)
     {
-        return $query->where('locale_id', appLocaleId());
+        return $query->where('locale_id', localeId());
     }
 
     /**
