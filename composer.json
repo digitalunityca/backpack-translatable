@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "DigitalUnityCa\\Translatable\\": "src"
+            "DigitalUnityCa\\Translatable\\": "src/"
         }
     },
     "autoload-dev": {
